@@ -1,0 +1,14 @@
+# wordpress-pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wordpress-pv
+  labels:
+    type: local # Etiqueta opcional para identificarlo
+spec:
+  capacity:
+    storage: 10Gi # Debe coincidir o ser mayor que la solicitud del PVC
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/wordpress" # Ruta donde se guardarán los datos de WordPress en el nodo

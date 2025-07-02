@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: frontend
+    spec:
+      containers:
+        - image: wordpress:latest # Puedes especificar una versión si lo deseas
+          name: wordpress
+          env:
+            - name: WORDPRESS_DB_HOST
+              value: mysql # El nombre del servicio de MySQL
+            - name: WORDPRESS_DB_NAME
+              value: wordpress # El nombre de la base de datos que configuraste en MySQL
+            - name: WORDPRESS_DB_USER
+              value: root # El usuario de la base de datos
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-root-password
+          ports:
+            - containerPort: 80
+              name: wordpress
+          volumeMounts:
+            - name: wordpress-persistent-storage
+              mountPath: /var/www/html
+      volumes:
+        - name: wordpress-persistent-storage
+          persistentVolumeClaim:
+            claimName: wordpress-pv-claim
