@@ -1,0 +1,298 @@
+    1  sudo apt update && sudo apt upgrade -y
+    2  sudo reboot
+    3  sudo apt update && sudo apt upgrade -y
+    4  apt update
+    5  apt upgrade
+    6  apt update
+    7  apt upgrade
+    8  sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+    9  curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   10  echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   11  sudo apt-get update
+   12  sudo apt-get install -y kubelet kubeadm kubectl
+   13  sudo apt-mark hold kubelet kubeadm kubectl
+   14  sudo systemctl enable --now kubelet
+   15  kubelet --version
+   16  kubeadm version
+   17  kubectl version –client
+   18  sudo swapoff -a
+   19  sudo sed -i '/ swap / s/^/#/' /etc/fstab
+   20  free -h
+   21  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+   22  br_netfilter
+   23  overlay
+   24  EOF
+   25  sudo modprobe overlay
+   26  sudo modprobe br_netfilter
+   27  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+   28  net.bridge.bridge-nf-call-iptables  = 1
+   29  net.bridge.bridge-nf-call-ip6tables = 1
+   30  net.ipv4.ip_forward                 = 1
+   31  EOF
+   32  sudo sysctl –system
+   33  sudo sysctl --system
+   34  lsmod | grep br_netfilter
+   35  lsmod | grep overlay
+   36  sysctl net.ipv4.ip_forward
+   37  sysctl net.bridge.bridge-nf-call-iptables
+   38  sudo apt-get update && sudo apt-get install -y     ca-certificates     curl     gnupg     lsb-release
+   39  sudo mkdir -p /etc/apt/keyrings
+   40  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+   41  echo "deb [arch=$(dpkg --print-architecture) \
+   42  signed-by=/etc/apt/keyrings/docker.gpg] \
+   43  https://download.docker.com/linux/ubuntu \
+   44  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+   45  sudo apt-get update
+   46  sudo apt-get install -y containerd.io
+   47  sudo mkdir -p /etc/containerd
+   48  sudo containerd config default | sudo tee /etc/containerd/config.toml > /dev/null
+   49  sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+   50  sudo systemctl restart containerd
+   51  sudo systemctl enable containerd
+   52  systemctl status containerd
+   53  sudo kubeadm config images pull
+   54  sudo hostnamectl set-hostname k8scp
+   55  cat /etc/hosts
+   56  vi /etc/hosts
+   57  ip add
+   58  sudo kubeadm init --pod-network-cidr=172.24.0.0/16 --cri-socket unix:///run/containerd/containerd.sock --control-plane-endpoint=k8scp
+   59  mkdir -p $HOME/.kube
+   60  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+   61  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+   62  exit
+   63  kubectl get nodes
+   64  curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/calico.yaml
+   65  ls
+   66  vi calico.yaml 
+   67  vi calico.yaml 
+   68  curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/tigera-operator.yaml
+   69  curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/custom-resources.yaml
+   70  ls
+   71  vi custom-resources.yaml 
+   72  kubectl apply -f calico.yaml
+   73  kubectl get pods -n kube-system
+   74  kubectl get nodes
+   75  swapoff -a
+   76  vi /etc/fstab 
+   77  sudo sed -i '/ swap / s/^/#/' /etc/fstab
+   78  free -h
+   79  kubectl get nodes
+   80  kubectl get pods -n kube-system
+   81  kubectl delete pods --all -n kube-system
+   82  kubectl get pods -n kube-system
+   83  kubectl get nodes
+   84  kubectl get pods -n kube-system
+   85  sudo journalctl -xeu kubelet
+   86  kubectl get nodes
+   87  kubectl describe node $(hostname)
+   88  kubectl apply -f calico.yaml
+   89  vi calico.yaml 
+   90  kubectl apply -f calico.yaml
+   91  kubectl get nodes
+   92  kubectl delete pods --all -n kube-system
+   93  kubectl get nodes
+   94  kubectl get pods -n kube-system
+   95  kubectl get nodes
+   96  kubectl get pods -n kube-system
+   97  kubectl get nodes
+   98  kubectl get pods -n kube-system
+   99  kubectl get nodes
+  100  kubectl get nodes -o wide
+  101  ls
+  102  vi mysql-pvc.yaml
+  103  vi mysql-deployement.yaml
+  104  vi wordpress-deployement.yaml
+  105  cat mysql-deployement.yaml 
+  106  kubectl apply -f mysql-pvc.yaml
+  107  kubectl apply -f mysql-deployment.yaml
+  108  kubectl apply -f wordpress-deployment.yaml
+  109  kubectl apply -f wordpress-deployement.yaml
+  110  kubectl apply -f mysql-deployement.yaml
+  111  kubectl get nodes -o wide
+  112  kubectl get nodes
+  113  ls
+  114  mv wordpress-deployement.yaml wordpress-deployment.yaml 
+  115  mv mysql-deployement.yaml mysql-deployment.yaml 
+  116  ls
+  117  kubectl apply -f mysql-pvc.yaml
+  118  kubectl apply -f mysql-deployment.yaml
+  119  kubectl apply -f wordpress-deployment.yaml
+  120  kubectl delete -f wordpress-deployment.yaml
+  121  kubectl delete -f mysql-deployment.yaml
+  122  kubectl delete -f mysql-pvc.yaml
+  123  kubectl apply -f mysql-pvc.yaml
+  124  kubectl apply -f mysql-deployment.yaml
+  125  kubectl apply -f wordpress-deployment.yaml
+  126  kubectl get nodes -o wide
+  127  kubectl get pods -n kube-system
+  128  kubectl get nodes -o wide
+  129  ls
+  130  echo -n "tu_contraseña_segura" | base64
+  131  vi mysql-secret.yaml
+  132  kubectl delete -f wordpress-deployment.yaml
+  133  kubectl delete -f mysql-deployment.yaml
+  134  kubectl delete -f mysql-pvc.yaml
+  135  vi mysql-pvc.yaml 
+  136  vi mysql-deployment.yaml 
+  137  vi mysql-service.yaml
+  138  vi wordpress-pvc.yaml
+  139  vi wordpress-deployment.yaml 
+  140  vi wordpress-service.yaml
+  141  kubectl apply -f wordpress-service.yaml
+  142  kubectl apply -f wordpress-deployment.yaml
+  143  kubectl apply -f wordpress-pvc.yaml
+  144  kubectl apply -f mysql-service.yaml
+  145  kubectl apply -f mysql-deployment.yaml
+  146  kubectl apply -f mysql-pvc.yaml
+  147  kubectl apply -f mysql-secret.yaml 
+  148  echo -n "159357MI" | base64
+  149  vi mysql-secret.yaml 
+  150  kubectl apply -f mysql-secret.yaml 
+  151  kubectl apply -f wordpress-service.yaml
+  152  kubectl apply -f wordpress-deployment.yaml
+  153  kubectl apply -f wordpress-pvc.yaml
+  154  kubectl apply -f mysql-service.yaml
+  155  kubectl apply -f mysql-deployment.yaml
+  156  kubectl apply -f mysql-pvc.yaml
+  157  kubectl apply -f mysql-secret.yaml 
+  158  kubectl get pods -n kube-system
+  159  kubectl get deployments
+  160  kubectl get pods
+  161  kubectl get services
+  162  kubectl get pvc
+  163  sudo mkdir -p /mnt/data/mysql
+  164  sudo mkdir -p /mnt/data/wordpress
+  165  sudo chmod 777 /mnt/data/mysql
+  166  sudo chmod 777 /mnt/data/wordpress
+  167  vi mysql-pv.yaml
+  168  vi wordpress-pv.yaml
+  169  kubectl apply -f mysql-pv.yaml
+  170  kubectl apply -f wordpress-pv.yaml
+  171  kubectl get pv
+  172  kubectl get pvc
+  173  kubectl get deployments
+  174  kubectl get pods
+  175  kubectl get services
+  176  kubectl get pvc
+  177  kubectl get services
+  178  kubectl get pods
+  179  ls
+  180  apt install git
+  181  git remote add origin https://github.com/IMIKNACIO/prueba3.git
+  182  git branch -M main
+  183  git push -u origin main
+  184  git clone https://github.com/IMIKNACIO/prueba3.git
+  185  cd prueba3/
+  186  ls
+  187  cp ../mysql-* .
+  188  ls
+  189  cp ../wor* .
+  190  ls
+  191  cp ../c* .
+  192  ls
+  193  cp ../t* .
+  194  ls
+  195  git add
+  196  git add .
+  197  git commit 
+  198  git config --global user.mail miguelyelking@gmail.com
+  199  git config --global user.name IMIKNACIO
+  200  git add .
+  201  git commit 
+  202  git config user.name IMIKNACIO
+  203  git config user.mail miguelyelking@gmail.com
+  204  git add .
+  205  git commit
+  206  ssh-keygen -t ed25519 -C "miguelyelking@gmail.com" 
+  207  cat /root/.ssh/id_ed25519.pub
+  208  git add .
+  209  git commit
+  210  git config --global --list
+  211  ssh -T git@github.com
+  212  git add .
+  213  git commit
+  214  exit
+  215  ls
+  216  rm -f prueba3/
+  217  rmdir -f prueba3/
+  218  rmdir prueba3/
+  219  git clone https://github.com/IMIKNACIO/prueba3.git
+  220  mkdir prue
+  221  cd prue
+  222  git clone https://github.com/IMIKNACIO/prueba3.git
+  223  ls
+  224  cd prueba3/
+  225  ls
+  226  cp ../mysql-* .
+  227  cp ../../mysql-* .
+  228  cp ../../w* .
+  229  cp ../../c* .
+  230  cp ../../t* .
+  231  ls
+  232  git add .
+  233  git commit
+  234  git Omit --global
+  235  git comit --global
+  236  git commit --global
+  237  git commit -a
+  238  git config --global --list
+  239  git config user.name imiknacio
+  240  git config --global --list
+  241  ssh -T git@github.com
+  242  git push
+  243  git commit -a
+  244  git config --list
+  245  git commit ?
+  246  git commit fsdf
+  247  git commit --globn
+  248  git commit --author IMIKNACIO 
+  249  git Omit --global user.mail miguelyelking@gmail.com
+  250  git commit --global user.mail miguelyelking@gmail.com
+  251  git init
+  252  ls
+  253  git add .
+  254  git commit
+  255  gh repo clone IMIKNACIO/prueba3
+  256  apt  install gh
+  257  gh repo clone IMIKNACIO/prueba3
+  258  gh auth login
+  259  ls
+  260  gls
+  261  ls
+  262  cd ..
+  263  ls
+  264  cd prueba3/
+  265  git add .
+  266  git init
+  267  git commit
+  268  git commit --author="IMIKNACIO <miguelyelking@gmail.com>" -m "Corrige error en login" 
+  269  git commit --author="IMIKNACIO miguelyelking@gmail.com" -m "Corrige error en login" 
+  270  git commit --author="IMIKNACIO <miguelyelking@gmail.com>" -m "Corrige error en login" 
+  271  fatal: unable to auto-detect email address (got 'root@k8scp.(none)')EXIT
+  272  exit
+  273  kubectl get nodes
+  274  kubectl get pods
+  275  ls
+  276  cd
+  277  ls
+  278  cd snap/
+  279  ls
+  280  cd 
+  281  ls
+  282  ls -la
+  283  cd .kube/
+  284  ls
+  285  cd config 
+  286  ls
+  287  cd ..
+  288  cd /home/ignacio/
+  289  ls
+  290  ls -la
+  291  cd prueba3
+  292  ls
+  293  cd ..
+  294  kubectl get deployments
+  295  kubectl get replicasets
+  296  kubectl get nodes
+  297  history
+  298  history >> history.txt
